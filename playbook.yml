@@ -1,0 +1,29 @@
+---
+- name: Configuración de máquinas virtuales
+  hosts: servidores
+  become: yes  
+
+  tasks:
+    - name: Actualizar paquetes
+      apt:
+        update_cache: yes
+      
+
+    - name: Instalar Postresql
+      apt:
+        name: postgresql-server
+        state: present
+     
+
+    - name: Instalar Git
+      apt:
+        name: git
+        state: present
+      
+
+    - name: Clonar repositorio Git
+      git:
+        repo: https://github.com/
+        dest: /ruta/destino
+      # version: master
+ 
