@@ -1,6 +1,0 @@
-black
-
-fastapi
-sqlalchemy
-uvicorn[standard]
-psycopg[binary]
