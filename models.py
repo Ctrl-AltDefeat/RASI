@@ -77,15 +77,17 @@ admin = Table( "admin", Base.metadata,
 medicaments = Table( "medicaments", Base.metadata,
     Column('id',BigInteger(), primary_key=True, index=True),
     Column('name',String(), index=True),
+    Column('brand',String(), index=True),
     # password = Column(String)
     Column( 'quantity',Float()),
     Column( 'unit',String()),
     Column( 'ingredients',String()),
-    Column( 'contains',Integer()))
+    Column( 'contains',BigInteger()))
 
 med_avaliability = Table( "medicaments_avaliable", Base.metadata,
     Column('id_ips',BigInteger(), primary_key=True, index=True),
     Column('id_medicament',BigInteger(), primary_key =True, index=True),
     # password = Column(String)
-    Column( 'avaliable',Integer()))
+    Column( 'avaliable',Integer()),
+    Column( 'price',Float()))
 

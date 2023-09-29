@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Path
 from sqlalchemy import create_engine, text
 from typing import List
-from schemas import Patient, Doctor, Schedule,Service, Appointment, IPS, Medicament_avaliable, Medicament
+from schemas import Patient, Doctor, Schedule,Service, Appointment, IPS, Medicament_avaliable, Medicament,MedicamentDetail
 from models import patients, doctors, schedules, Base, services, appointments, ips,med_avaliability, medicaments
 
 app = FastAPI()
@@ -59,7 +59,7 @@ def getAppointments():
         result = c.execute(stmt).all()
         return result
     
-# GET ONE
+# GET ONE 
 @app.get("/patients/{id}", response_model=Patient)
 def getPatient(id: int):
     with engine.connect() as c: 
@@ -70,12 +70,13 @@ def getPatient(id: int):
             return result
 @app.get("/ips/{id}", response_model=IPS)
 def getIPS(id: int):
-    with engine.connect() as c: 
+    with engine.connect() as c:  
             stmt = ips.select().where(ips.c.id == id)
             result = c.execute(stmt).fetchone()
             if result is None:
                 raise HTTPException(status_code=404, detail="IPS not found")
             return result
+@app.get("/medicaments/{id}", response_model=Medicament) 
 def getMedicament(id: int):
     with engine.connect() as c: 
             stmt = medicaments.select().where(medicaments.c.id == id)
@@ -83,7 +84,14 @@ def getMedicament(id: int):
             if result is None:
                 raise HTTPException(status_code=404, detail="Medicament not found")
             return result
+
+@app.get("/ips/{id_ips}/medicaments", response_model=List[MedicamentDetail]) 
+def getMedsAvaliability(id_ips: int):
+    with engine.connect() as c: 
+        stmt = "SELECT * FROM medicaments_avaliable  LEFT JOIN MEDICAMENTS ON MEDICAMENTS.ID = medicaments_avaliable.ID_MEDICAMENT  WHERE id_ips = " + str(id_ips) 
+        result = c.execute(text(stmt)).all()
         
+        return result      
         
 @app.get("/doctors/{id}", response_model=Doctor) 
 def getDoctor(id: int):
@@ -112,13 +120,20 @@ def getService(id: int):
             raise HTTPException(status_code=404, detail="Service not found")
         return result
 
-@app.get("/ips/{id_ips}/{id_medicament}", response_model=Medicament_avaliable) 
+@app.get("/ips/{id_ips}/medicaments/{id_medicament}", response_model=MedicamentDetail) 
 def getMedAvaliability(id_ips: int, id_medicament: int):
     with engine.connect() as c: 
-        stmt = med_avaliability.select().where((med_avaliability.c.id_ips == id_ips) & (med_avaliability.c.id_medicament == id_medicament) )
-        result = c.execute(stmt).fetchone()
+        stmt = "SELECT * FROM medicaments_avaliable  LEFT JOIN MEDICAMENTS ON MEDICAMENTS.ID = medicaments_avaliable.ID_MEDICAMENT  WHERE id_ips = " + str(id_ips) + " AND id_medicament = " +str(id_medicament)  
+        result = c.execute(text(stmt)).fetchone()
         if result is None:
-            raise HTTPException(status_code=404, detail="Service not found")
+            raise HTTPException(status_code=404, detail="Medicament not found")
+        return result
+    
+@app.get("/medicaments/{id_medicament}/ips", response_model=IPS) 
+def getMedIPS( id_medicament: int):
+    with engine.connect() as c: 
+        stmt = "SELECT * FROM medicaments_avaliable  LEFT JOIN IPS ON IPS.ID = medicaments_avaliable.ID_IPS  WHERE id_medicament = " + str(id_medicament) 
+        result = c.execute(text(stmt)).fetchone()
         return result
 # POST 
 @app.post("/patients")
@@ -163,10 +178,12 @@ def addMedicament(medicament: Medicament ):
     medicamentd = { 
                 'id': medicament.id,
                 'name': medicament.name,
+                'brand': medicament.name,
                 'quantity': medicament.quantity,
                 'unit': medicament.unit,
                 'ingredients':medicament.ingredients ,
-                'contains': medicament.contains
+                'contains': medicament.contains,
+
     }
     with engine.connect() as c:
         try:
@@ -177,22 +194,32 @@ def addMedicament(medicament: Medicament ):
             c.commit()
             return medicamentd
         
-@app.post("/ips/{id_ips}")
-def addMedicament(mavaliable: Medicament_avaliable ):
+
+
+@app.post("/ips/{id_ips}/medicaments")
+def addMedicamentIPS( mavaliable: Medicament_avaliable ,id_ips: int = Path(..., title="ID of the IPS in the URL")):
     medicamentd = { 
-                'id_ips': mavaliable.id_ips,
-                'id_medicament': mavaliable.id_medicament,
-                'avaliable': mavaliable.avaliable
+        'id_ips': id_ips,
+        'id_medicament': mavaliable.id_medicament,
+        'avaliable': mavaliable.avaliable, 
+        'price': mavaliable.price
     }
     with engine.connect() as c:
         try:
-            getMedAvaliability(mavaliable.id_ips, mavaliable.id_medicament)
+            getMedAvaliability(id_ips, mavaliable.id_medicament)
             return "Cannot create Medicament, already exists"
-        except HTTPException as e:
-            c.execute(med_avaliability.insert().values(medicamentd))
-            c.commit()
-            return medicamentd
-                                        
+        except HTTPException :
+            try:
+                getMedicament(mavaliable.id_medicament)
+                getIPS(id_ips)
+                c.execute(med_avaliability.insert().values(medicamentd))
+                c.commit()
+                return medicamentd
+            except Exception :
+                return HTTPException(status_code=404, detail="IPS or Medicament does not exists.")
+
+
+
 
 @app.post("/doctors")
 def addDoctor(doctor: Doctor ):
