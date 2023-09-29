@@ -5,14 +5,21 @@ from schemas import Patient, Doctor, Schedule,Service, Appointment, IPS, Medicam
 from models import patients, doctors, schedules, Base, services, appointments, ips,med_avaliability, medicaments
 
 app = FastAPI()
+
+db_user = "admin"        
+db_pass = "password"     
+db_host = "postgres"    
+db_port = 5432         
+db_name = "rasi"         
+
+
 engine = create_engine(
-    "postgresql+psycopg://admin:password@postgres:5432/rasi", echo=True
+    f"postgresql+psycopg://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}",
+    echo=True
 )
 
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
-
-
 # GET
 # GET ALL
 @app.get("/patients", response_model=List[Patient])
