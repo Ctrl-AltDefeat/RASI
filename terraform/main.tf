@@ -1,7 +1,7 @@
 provider "google"{
-  project = "isis2503-terraform"
+  project = "isis2503-proyectog4"
   credentials = "${file("credentials.json")}"
-  region = "us-central"
+  region = "us-central1"
   zone = "us-central1-c"
 }
 
@@ -48,6 +48,9 @@ resource "google_compute_instance" "db_server_instance" {
 }
 
 
-output "ip" {
-  value = google_compute_instance.web_server_instance.network_interface.0.network_ip
+output "instance_ips" {
+  value = [
+    google_compute_instance.web_server_instance.network_interface.0.network_ip,
+    google_compute_instance.db_server_instance.network_interface.0.network_ip
+  ]
 }
