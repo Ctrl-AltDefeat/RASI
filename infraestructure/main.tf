@@ -1,56 +1,59 @@
-provider "google"{
-  project = "isis2503-proyectog4"
-  credentials = "${file("credentials.json")}"
-  region = "us-central1"
-  zone = "us-central1-c"
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "4.84.0"
+    }
+  }
 }
 
-resource "google_compute_instance" "web_server_instance" {
-  machine_type = "c3-standard-4"
-  name         = "web-server"
-  zone         = "us-central1-a"
+provider "google" {
+  project     = "isis2503-proyectog4"
+  credentials = file("credentials.json")
+  region      = "us-central1"
+  zone        = "us-central1-c"
+}
+
+resource "google_compute_instance" "web_server" {
+  machine_type              = "c3-standard-4"
+  name                      = "web-server-instance"
+  description               = "FASTAPI RASI web server"
   allow_stopping_for_update = true
+
+  desired_status = var.deploy_state
 
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
-
     }
   }
 
   network_interface {
     network = "default"
     access_config {
-      //necessary even empty.
+      // Ephemeral public IP
     }
   }
 }
 
-resource "google_compute_instance" "db_server_instance" {
-  machine_type = "c3-standard-4"
-  name         = "db-server"
-  zone         = "us-central1-a"
+resource "google_compute_instance" "db_server" {
+  machine_type              = "c3-standard-4"
+  name                      = "db-server-instance"
+  description               = "PostgreSQL server"
   allow_stopping_for_update = true
+
+  desired_status = var.deploy_state
 
   boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
-
     }
   }
 
   network_interface {
     network = "default"
     access_config {
-      //necessary even empty.
+      // Ephemeral public IP
     }
   }
-}
-
-
-output "instance_ips" {
-  value = [
-    google_compute_instance.web_server_instance.network_interface.0.network_ip,
-    google_compute_instance.db_server_instance.network_interface.0.network_ip
-  ]
 }
