@@ -18,7 +18,7 @@
     - name: Clone RASI monorepo
       git:
         repo: https://github.com/Ctrl-AltDefeat/RASI.git
-        updaate: yes
+        update: yes
 
 - name: RASI db provisioning
   hosts: rasi_db

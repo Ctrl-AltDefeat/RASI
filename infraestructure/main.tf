@@ -2,17 +2,13 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.84.0"
-    }
-    ansible = {
-      source  = "ansible/ansible"
-      version = "1.1.0"
+      version = "5.2.0"
     }
   }
 }
 
 provider "google" {
-  project     = "isis2503-proyectog4"
+  project     = ""
   credentials = file("credentials.json")
   region      = "us-central1"
   zone        = "us-central1-c"
@@ -24,7 +20,6 @@ resource "google_compute_instance" "web_server" {
   description               = "FASTAPI RASI web server"
   allow_stopping_for_update = true
 
-  desired_status = var.deploy_state
 
   boot_disk {
     initialize_params {
@@ -45,8 +40,6 @@ resource "google_compute_instance" "db_server" {
   name                      = "db-server-instance"
   description               = "PostgreSQL server"
   allow_stopping_for_update = true
-
-  desired_status = var.deploy_state
 
   boot_disk {
     initialize_params {
