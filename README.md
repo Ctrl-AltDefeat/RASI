@@ -13,3 +13,9 @@ To run the web server execute
 For psycopg3 dependencies are
 
 > build-essential python3-dev libpq-dev
+
+Use dev_requirements.txt!
+
+To run the web server execute
+
+> uvicorn main:app --host 0.0.0.0 --port 80
