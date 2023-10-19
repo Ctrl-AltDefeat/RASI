@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException, Path
 from sqlalchemy import create_engine, text
-from typing import List
 from schemas import (
     Patient,
     Doctor,
@@ -43,21 +42,21 @@ Base.metadata.create_all(engine)
 
 # GET
 # GET ALL
-@app.get("/patients", response_model=List[Patient])
+@app.get("/patients", response_model=list[Patient])
 def getPatients():
     with engine.connect() as c:
         result = c.execute(text("SELECT * FROM patients"))
         return result.all()
 
 
-@app.get("/ips", response_model=List[IPS])
+@app.get("/ips", response_model=list[IPS])
 def getIPSs():
     with engine.connect() as c:
         result = c.execute(text("SELECT * FROM ips"))
         return result.all()
 
 
-@app.get("/medicaments", response_model=List[Medicament])
+@app.get("/medicaments", response_model=list[Medicament])
 def getMedicaments():
     with engine.connect() as c:
         stmt = medicaments.select()
@@ -65,7 +64,7 @@ def getMedicaments():
         return result.all()
 
 
-@app.get("/doctors", response_model=List[Doctor])
+@app.get("/doctors", response_model=list[Doctor])
 def getDoctors():
     with engine.connect() as c:
         stmt = doctors.select()
@@ -73,7 +72,7 @@ def getDoctors():
         return result
 
 
-@app.get("/services", response_model=List[Service])
+@app.get("/services", response_model=list[Service])
 def getServices():
     with engine.connect() as c:
         stmt = services.select()
@@ -81,7 +80,7 @@ def getServices():
         return result
 
 
-@app.get("/schedules", response_model=List[Schedule])
+@app.get("/schedules", response_model=list[Schedule])
 def getSchedules():
     with engine.connect() as c:
         stmt = schedules.select()
@@ -89,7 +88,7 @@ def getSchedules():
         return result
 
 
-@app.get("/appointments", response_model=List[Appointment])
+@app.get("/appointments", response_model=list[Appointment])
 def getAppointments():
     with engine.connect() as c:
         stmt = appointments.select()
@@ -128,7 +127,7 @@ def getMedicament(id: int):
         return result
 
 
-@app.get("/ips/{id_ips}/medicaments", response_model=List[MedicamentDetail])
+@app.get("/ips/{id_ips}/medicaments", response_model=list[MedicamentDetail])
 def getMedsAvaliability(id_ips: int):
     with engine.connect() as c:
         stmt = (
