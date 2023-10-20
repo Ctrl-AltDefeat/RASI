@@ -73,7 +73,7 @@ function Appointments() {
 
     return (
         <div className="container mt-4">
-            <h2 className="text-center mb-4">Pedir Citas Médicas</h2>
+            <h2 className="text-center mb-4">Mirar Citas Disponibles</h2>
             <form>
                 <div className="row mb-3">
                     <div className="col-md-6">
@@ -97,7 +97,7 @@ function Appointments() {
                             ))}
                         </select>
                     </div>
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                         <label htmlFor="doctor" className="form-label">
                             Doctor
                         </label>
@@ -114,7 +114,7 @@ function Appointments() {
                                 </option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="row mb-3">
                     <div className="col-md-6">
@@ -129,10 +129,10 @@ function Appointments() {
                             id="dia"
                         />
                     </div>
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                         <label htmlFor="hora" className="form-label">
                             Hora
-                        </label>
+                        </label> */}
                         {/* <select
               value={hora}
               onChange={(e) => setHora(e.target.value)}
@@ -146,7 +146,7 @@ function Appointments() {
                 </option>
               ))}
             </select> */}
-                    </div>
+                    {/* </div> */}
                 </div>
                 <div className="text-center">
                     <button
