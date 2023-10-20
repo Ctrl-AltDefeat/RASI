@@ -13,7 +13,7 @@ function Medicaments() {
                     const detalles = {
                         Nombre: data.name,
                         Marca: data.brand,
-                        "Cantidad Disponible": data.available,
+                        "Cantidad Disponible": data.avaliable,
                     };
                     setResultadoBusqueda(detalles);
                 } else {
@@ -53,7 +53,7 @@ function Medicaments() {
                         <tbody>
                             {Object.entries(resultadoBusqueda).map(([key, value]) => (
                                 <tr key={key}>
-                                    <td>{key}</td>
+                                    <td>{resultadoBusqueda.Nombre}</td>
                                     <td>{value}</td>
                                 </tr>
                             ))}

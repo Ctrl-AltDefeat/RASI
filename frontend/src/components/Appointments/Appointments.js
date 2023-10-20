@@ -33,11 +33,13 @@ function Appointments() {
 
     const buscarCitasPorEspecializacionYHora = () => {
         fetch(
-            `http://${ip}:8000/appointments?services=${especializacion}&day=${dia}&hour=${hora}`
+            `http://${ip}:8000/appointments/services/${especializacion}?date=${dia}`
         )
             .then((response) => response.json())
             .then((data) => {
-                setDoctoresEncontrados(data.appointments);
+                if (data) {
+                    setDoctoresEncontrados(data.appointments);
+                } 
             })
             .catch((error) =>
                 console.error("Error fetching appointments:", error)
@@ -84,7 +86,7 @@ function Appointments() {
                             id="dia"
                         />
                     </div>
-                    <div className="col-md-6">
+                    {/* <div className="col-md-6">
                         <label htmlFor="hora" className="form-label">
                             Hora
                         </label>
@@ -96,7 +98,7 @@ function Appointments() {
                             id="hora"
                             placeholder="Ingrese la hora"
                         />
-                    </div>
+                    </div> */}
                 </div>
                 <div className="text-center">
                     <button
@@ -109,18 +111,19 @@ function Appointments() {
                 </div>
             </form>
             {/* Mostrar resultados encontrados */}
-            {doctoresEncontrados.length > 0 && (
-                <div className="mt-4">
-                    <h3>Resultados Encontrados:</h3>
-                    <ul>
-                        {doctoresEncontrados.map((cita) => (
-                            <li key={cita.id}>
-                                {cita.doctor} - {cita.fecha} - {cita.hora}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            {doctoresEncontrados && doctoresEncontrados.length > 0 && (
+            <div className="mt-4">
+                <h3>Resultados Encontrados:</h3>
+                <ul>
+                    {doctoresEncontrados.map((cita) => (
+                        <li key={cita.id}>
+                            {cita.doctor} - {cita.fecha} - {cita.hora}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        )}
+
         </div>
     );
 }
