@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException, Path
 from sqlalchemy import create_engine, text
-from schemas import (
+from datetime import datetime, time
+
+from backend.schemas import (
     Patient,
     Doctor,
     Schedule,
@@ -11,7 +13,7 @@ from schemas import (
     Medicament,
     MedicamentDetail,
 )
-from models import (
+from backend.models import (
     patients,
     doctors,
     schedules,
@@ -40,7 +42,7 @@ Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
 
-# GET
+# GET 
 # GET ALL
 @app.get("/patients", response_model=list[Patient])
 def getPatients():
@@ -94,7 +96,19 @@ def getAppointments():
         stmt = appointments.select()
         result = c.execute(stmt).all()
         return result
-
+@app.get("/appointments/{id}", response_model=list[Appointment])
+def getAppointmentByService(id: int, date: str = None, time: str = None):
+    with engine.connect() as c:
+        stmt = appointments.select().where((appointments.c.service_id == id) & (appointments.c.patient_id.is_(None)))
+        if date:
+            date_obj = datetime.strptime(date, "%Y-%m-%d").date()
+            stmt = stmt.where(appointments.c.date == date_obj)
+        if time:
+            time_obj = datetime.strptime(time, "%H:%M").time()
+            stmt = stmt.where(appointments.c.time == time_obj)
+            
+        result = c.execute(stmt).all()
+        return result
 
 # GET ONE
 @app.get("/patients/{id}", response_model=Patient)
@@ -335,14 +349,19 @@ def addAppointment(appointment: Appointment):
     with engine.connect() as c:
         try:
             getAppointment(appointment.id)
-            getDoctor(appointment.doctor_id)
-            getPatient(appointment.patient_id)
-            getService(appointment.service_id)
+            
             return "Cannot create appointment"
         except HTTPException as e:
-            c.execute(appointments.insert().values(appointmentd))
-            c.commit()
-            return appointmentd
+            try:
+                getDoctor(appointment.doctor_id)
+                if appointment.patient_id !=None:
+                    getPatient(appointment.patient_id)
+                getService(appointment.service_id)
+                c.execute(appointments.insert().values(appointmentd))
+                c.commit()
+                return appointmentd
+            except Exception as e:
+                return "No se logro nada"
 
 
 # UPDATE

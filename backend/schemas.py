@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import time, date
-
+from typing import Optional
 # Schemas
 
 
@@ -38,7 +38,7 @@ class Appointment(BaseModel):
     time: time
     duration: int
     address: str
-    patient_id: int
+    patient_id: Optional[int]
     doctor_id: int
     service_id: int
 
