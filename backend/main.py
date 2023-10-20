@@ -96,7 +96,7 @@ def getAppointments():
         stmt = appointments.select()
         result = c.execute(stmt).all()
         return result
-@app.get("/appointments/{id}", response_model=list[Appointment])
+@app.get("/appointments/services/{id}", response_model=list[Appointment])
 def getAppointmentByService(id: int, date: str = None, time: str = None):
     with engine.connect() as c:
         stmt = appointments.select().where((appointments.c.service_id == id) & (appointments.c.patient_id.is_(None)))
