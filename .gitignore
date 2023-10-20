@@ -426,4 +426,6 @@ $RECYCLE.BIN/
 *.lnk
 
 .vscode
+.idea
 credentials.json
+inventory.yml
