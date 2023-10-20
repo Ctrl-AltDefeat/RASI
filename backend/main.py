@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Path
 from sqlalchemy import create_engine, text
-from datetime import datetime, time
-
+from datetime import datetime
+from fastapi.middleware.cors import CORSMiddleware
 from backend.schemas import (
     Patient,
     Doctor,
@@ -27,11 +27,12 @@ from backend.models import (
 
 app = FastAPI()
 
-db_user = "admin"
-db_pass = "password"
-db_host = "postgres"
-db_port = 5432
-db_name = "rasi"
+db_user = "monitoring_user"
+db_pass = "isis2503"
+db_host = "10.128.0.4"
+db_port = "5432"
+db_name = "monitoring_db"
+
 
 
 engine = create_engine(
@@ -41,6 +42,13 @@ engine = create_engine(
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
 
 # GET 
 # GET ALL
@@ -110,6 +118,26 @@ def getAppointmentByService(id: int, date: str = None, time: str = None):
         result = c.execute(stmt).all()
         return result
 
+@app.get("/appointments/services", response_model=list[Appointment])
+def getAppointmentByServiceName(speciality: str , date: str = None, time: str = None):
+    with engine.connect() as c:
+        print(speciality)
+        stmt = services.select().where(services.c.speciality == speciality )
+        result = c.execute(stmt).fetchone()
+        if result is not None:
+
+            fin  =  result[0]
+            stmt = appointments.select().where((appointments.c.service_id == fin) & (appointments.c.patient_id.is_(None)))
+            if date:
+                date_obj = datetime.strptime(date, "%Y-%m-%d").date()
+                stmt = stmt.where(appointments.c.date == date_obj)
+            if time:
+                time_obj = datetime.strptime(time, "%H:%M").time()
+                stmt = stmt.where(appointments.c.time == time_obj)
+
+            result = c.execute(stmt).all()
+            return result
+        raise HTTPException(status_code=404, detail="No se logro")
 # GET ONE
 @app.get("/patients/{id}", response_model=Patient)
 def getPatient(id: int):

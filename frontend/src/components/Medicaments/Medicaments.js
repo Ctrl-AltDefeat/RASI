@@ -42,7 +42,21 @@ function Medicaments() {
                     </button>
                 </div>
             </form>
-            <div>{resultadoBusqueda && <p>{resultadoBusqueda}</p>}</div>
+            {resultadoBusqueda && (
+                <div>
+                    <h3>Medicamento encontrado:</h3>
+                    <table className="table">
+                        <tbody>
+                            {Object.entries(resultadoBusqueda).map(([key, value]) => (
+                                <tr key={key}>
+                                    <td>{key}</td>
+                                    <td>{value}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 }
