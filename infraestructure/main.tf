@@ -12,9 +12,6 @@ provider "google" {
   region      = "us-central1"
   zone        = "us-central1-c"
 }
-resource "google_service_account" "terraform-sa" {
-    account_id = "terraform-sa"
-}
 
 resource "google_compute_instance" "web_server" {
   machine_type              = "c3-standard-4"
@@ -32,11 +29,11 @@ resource "google_compute_instance" "web_server" {
     access_config {}
   }
     service_account {
-        email = google_service_account.terraform-sa.email
+        email = "terraform-sa@isis2503-terraform.iam.gserviceaccount.com"
         scopes = ["cloud-platform"]
     }
     provisioner "remote-exec" {
-        inline = ["echo 'Wait untilSSH is ready'"]
+        inline = ["echo 'Wait until SSH is ready'"]
 
         connection {
             type = "ssh"

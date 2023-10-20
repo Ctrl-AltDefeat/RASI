@@ -1,6 +1,7 @@
 - name: RASI backend provisioning
   hosts: all
   remote_user: ansible
+  become: true
   tasks:
     - name: Install dependencies
       apt:
@@ -14,16 +15,19 @@
         autoremove: yes
       become: yes
 
+    - name: Update permissions for /home/pabluchenko4000/ directory while creating it
+      file:
+          path: /home/pabluchenko4000/repo
+          state: directory
+          recurse: yes
+          owner: pabluchenko4000
+          group: pabluchenko4000
+          mode: 0755
 
-    - name: step into dir
-      shell: ls /home/
-
-    - name: create dir
-      shell: mkdir repo
-
-    - name: access dir
-      shell: cd repo
-
-    - name: Clone RASI monorepo
-      shell: git clone https://github.com/Ctrl-AltDefeat/RASI.git
+    -   name: Clone a github repository
+        git:
+            repo: https://github.com/Ctrl-AltDefeat/RASI.git
+            dest: /home/pabluchenko4000/repo
+            clone: yes
+            update: yes
 
