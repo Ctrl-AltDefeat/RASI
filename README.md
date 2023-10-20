@@ -14,7 +14,7 @@ For psycopg3 dependencies are
 
 > build-essential python3-dev libpq-dev
 
-Use dev_requirements.txt!
+Use production_requirements.txt!
 
 To run the web server execute
 
