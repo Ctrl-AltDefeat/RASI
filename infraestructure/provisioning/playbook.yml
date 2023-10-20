@@ -1,0 +1,29 @@
+- name: RASI backend provisioning
+  hosts: all
+  remote_user: ansible
+  tasks:
+    - name: Install dependencies
+      apt:
+        name:
+          - git
+          - python3
+          - python3-pip
+        state: latest
+        update_cache: yes
+        autoclean: yes
+        autoremove: yes
+      become: yes
+
+
+    - name: step into dir
+      shell: ls /home/
+
+    - name: create dir
+      shell: mkdir repo
+
+    - name: access dir
+      shell: cd repo
+
+    - name: Clone RASI monorepo
+      shell: git clone https://github.com/Ctrl-AltDefeat/RASI.git
+

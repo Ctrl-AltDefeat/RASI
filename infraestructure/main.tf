@@ -1,17 +1,19 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "5.2.0"
-    }
-  }
+locals {
+  project_id = "isis2503-terraform"
+    network = "default"
+    image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
+    ssh_user = "ansible"
+    private_key_path = "~/.ssh/ansbile_ed25519"
 }
 
 provider "google" {
-  project     = "isis2503-terraform"
+  project     = local.project_id
   credentials = file("credentials.json")
   region      = "us-central1"
   zone        = "us-central1-c"
+}
+resource "google_service_account" "terraform-sa" {
+    account_id = "terraform-sa"
 }
 
 resource "google_compute_instance" "web_server" {
@@ -20,46 +22,37 @@ resource "google_compute_instance" "web_server" {
   description               = "FASTAPI RASI web server"
   allow_stopping_for_update = true
 
-
-  boot_disk {
+    boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
     }
   }
-
-  network_interface {
+    network_interface {
     network = "default"
-    access_config {
-      // Ephemeral public IP
-    }
+    access_config {}
   }
-}
-
-resource "google_compute_instance" "db_server" {
-  machine_type              = "c3-standard-4"
-  name                      = "db-server-instance"
-  description               = "PostgreSQL server"
-  allow_stopping_for_update = true
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
+    service_account {
+        email = google_service_account.terraform-sa.email
+        scopes = ["cloud-platform"]
     }
-  }
+    provisioner "remote-exec" {
+        inline = ["echo 'Wait untilSSH is ready'"]
 
-  network_interface {
-    network = "default"
-    access_config {
-      // Ephemeral public IP
+        connection {
+            type = "ssh"
+            user = local.ssh_user
+            private_key = file(local.private_key_path)
+            host = self.network_interface[0].access_config[0].nat_ip
+        }
     }
-  }
-}
 
-resource "null_resource" "ansible_provisioner" {
     provisioner "local-exec" {
-        command = "ansible-playbook -i ${self.private_ip}, rasi.yml"
-        working_dir = "${path.module}/provisioning"
-        # Assuming your Ansible playbook is in a folder called 'ansible'
-        # within your Terraform module.
+        command = "ansible-playbook -i ${self.network_interface[0].access_config[0].nat_ip}, --private-key ${local.private_key_path} provisioning/playbook.yml"
     }
 }
+
+output "web_server_ip" {
+    description = "The public IP address of the web server"
+    value = google_compute_instance.web_server.network_interface[0].access_config[0].nat_ip
+}
+
