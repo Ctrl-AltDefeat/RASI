@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 function Medicaments() {
     const [medicamento, setMedicamento] = useState("");
-    const [resultadoBusqueda, setResultadoBusqueda] = useState("");
+    const [resultadoBusqueda, setResultadoBusqueda] = useState(null);
 
     const buscarMedicamento = () => {
         // Hacer la solicitud GET al endpoint de medicamentos en el backend
@@ -10,10 +10,14 @@ function Medicaments() {
             .then((response) => response.json())
             .then((data) => {
                 if (data) {
-                    const detalles = `Nombre: ${data.name}, Marca: ${data.brand}, Cantidad Disponible: ${data.avaliable}`;
-                    setResultadoBusqueda(`Medicamento encontrado: ${detalles}`);
+                    const detalles = {
+                        Nombre: data.name,
+                        Marca: data.brand,
+                        "Cantidad Disponible": data.available,
+                    };
+                    setResultadoBusqueda(detalles);
                 } else {
-                    setResultadoBusqueda("Medicamento no encontrado");
+                    setResultadoBusqueda(null);
                 }
             })
             .catch((error) =>
@@ -42,7 +46,21 @@ function Medicaments() {
                     </button>
                 </div>
             </form>
-            <div>{resultadoBusqueda && <p>{resultadoBusqueda}</p>}</div>
+            {resultadoBusqueda && (
+                <div>
+                    <h3>Medicamento encontrado:</h3>
+                    <table className="table">
+                        <tbody>
+                            {Object.entries(resultadoBusqueda).map(([key, value]) => (
+                                <tr key={key}>
+                                    <td>{key}</td>
+                                    <td>{value}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 }
