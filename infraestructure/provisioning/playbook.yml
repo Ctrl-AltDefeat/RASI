@@ -15,19 +15,10 @@
         autoremove: yes
       become: yes
 
-    - name: Update permissions for /home/pabluchenko4000/ directory while creating it
-      file:
-          path: /home/pabluchenko4000/repo
-          state: directory
-          recurse: yes
-          owner: pabluchenko4000
-          group: pabluchenko4000
-          mode: 0755
-
     -   name: Clone a github repository
         git:
             repo: https://github.com/Ctrl-AltDefeat/RASI.git
-            dest: /home/pabluchenko4000/repo
+            dest: /home/pabluchenko4000/RASI
             clone: yes
             update: yes
 
