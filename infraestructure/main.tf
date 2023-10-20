@@ -1,14 +1,13 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "5.2.0"
-    }
-  }
+locals {
+  project_id = "isis2503-terraform"
+    network = "default"
+    image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
+    ssh_user = "ansible"
+    private_key_path = "~/.ssh/ansbile_ed25519"
 }
 
 provider "google" {
-  project     = ""
+  project     = local.project_id
   credentials = file("credentials.json")
   region      = "us-central1"
   zone        = "us-central1-c"
@@ -20,37 +19,37 @@ resource "google_compute_instance" "web_server" {
   description               = "FASTAPI RASI web server"
   allow_stopping_for_update = true
 
-
-  boot_disk {
+    boot_disk {
     initialize_params {
       image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
     }
   }
-
-  network_interface {
+    network_interface {
     network = "default"
-    access_config {
-      // Ephemeral public IP
-    }
+    access_config {}
   }
+    service_account {
+        email = "terraform-sa@isis2503-terraform.iam.gserviceaccount.com"
+        scopes = ["cloud-platform"]
+    }
+    provisioner "remote-exec" {
+        inline = ["echo 'Wait until SSH is ready'"]
+
+        connection {
+            type = "ssh"
+            user = local.ssh_user
+            private_key = file(local.private_key_path)
+            host = self.network_interface[0].access_config[0].nat_ip
+        }
+    }
+
+    provisioner "local-exec" {
+        command = "ansible-playbook -i ${self.network_interface[0].access_config[0].nat_ip}, --private-key ${local.private_key_path} provisioning/playbook.yml"
+    }
 }
 
-resource "google_compute_instance" "db_server" {
-  machine_type              = "c3-standard-4"
-  name                      = "db-server-instance"
-  description               = "PostgreSQL server"
-  allow_stopping_for_update = true
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-minimal-2204-lts"
-    }
-  }
-
-  network_interface {
-    network = "default"
-    access_config {
-      // Ephemeral public IP
-    }
-  }
+output "web_server_ip" {
+    description = "The public IP address of the web server"
+    value = google_compute_instance.web_server.network_interface[0].access_config[0].nat_ip
 }
+
