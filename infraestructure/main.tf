@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "google" {
-  project     = ""
+  project     = "isis2503-terraform"
   credentials = file("credentials.json")
   region      = "us-central1"
   zone        = "us-central1-c"
@@ -53,4 +53,13 @@ resource "google_compute_instance" "db_server" {
       // Ephemeral public IP
     }
   }
+}
+
+resource "null_resource" "ansible_provisioner" {
+    provisioner "local-exec" {
+        command = "ansible-playbook -i ${self.private_ip}, rasi.yml"
+        working_dir = "${path.module}/provisioning"
+        # Assuming your Ansible playbook is in a folder called 'ansible'
+        # within your Terraform module.
+    }
 }

@@ -6,10 +6,10 @@ output "web_server_private_ip" {
   sensitive   = false
 }
 
-output "web_server_private_ip" {
+output "db-server-instance" {
   value = [
-    google_compute_instance.db_server.network_interface.0.network_ip
+    google_compute_instance.db_server.network_interface.0.network_ip,
   ]
-  description = "DB private instance ip(They are ephemeral)"
+  description = "DB server private instance ip(They are ephemeral)"
   sensitive   = false
 }
