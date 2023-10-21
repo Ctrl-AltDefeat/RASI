@@ -1,5 +1,5 @@
 {
-    "name": "RASI",
+    "name": "RASI backend",
     "dockerComposeFile": "docker-compose.yaml",
     "service": "web_server",
     "workspaceFolder": "/workspace",
