@@ -39,8 +39,7 @@ engine = create_engine(
     f"postgresql+psycopg://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}", echo=True
 )
 
-Base.metadata.drop_all(engine)
-Base.metadata.create_all(engine)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -137,7 +136,7 @@ def getAppointmentByServiceName(speciality: str , date: str = None, time: str = 
 
             result = c.execute(stmt).all()
             return result
-        raise HTTPException(status_code=404, detail="No se logro")
+        return []
 # GET ONE
 @app.get("/patients/{id}", response_model=Patient)
 def getPatient(id: int):
