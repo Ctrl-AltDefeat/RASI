@@ -1,9 +1,10 @@
 {
     "name": "RASI",
-    "dockerComposeFile": "docker-compose.yaml",
-    "service": "web_server",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
     "workspaceFolder": "/workspace",
-    "forwardPorts": [80, 5432, 8000],
     "customizations": {
         "vscode": {
             "settings": {
@@ -11,9 +12,7 @@
                 "editor.wordWrap": "off"
             },
             "extensions": [
-                "ms-python.python",
-                "ms-python.vscode-pylance",
-                "charliermarsh.ruff",
+                "dbaeumer.vscode-eslint",
                 "VisualStudioExptTeam.vscodeintellicode",
                 "esbenp.prettier-vscode",
                 "redhat.vscode-yaml",
