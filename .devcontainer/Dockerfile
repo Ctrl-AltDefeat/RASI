@@ -1,7 +1,7 @@
-FROM python:latest
+FROM ubuntu:latest
 
 RUN apt update && apt upgrade -y \
-    && DEBIAN_FRONTEND=noninteractive apt install -y sudo git gnupg locales \
+    && DEBIAN_FRONTEND=noninteractive apt install -y sudo git gnupg locales python3 python3-pip \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 \
     && echo "LANG=en_US.utf8" >> /etc/environment \
     && groupadd devgroup \
