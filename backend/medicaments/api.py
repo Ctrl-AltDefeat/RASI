@@ -6,7 +6,7 @@ from medicaments.dto import MedicamentAvailabilityDTO
 from medicaments.entity import MedicamentAvailabilityEntity
 from ips.entity import IPSEntity
 
-router = APIRouter(prefix="/medicament/", tags=["medicaments"])
+router = APIRouter(prefix="/medicament", tags=["medicaments"])
 
 
 @router.get(
