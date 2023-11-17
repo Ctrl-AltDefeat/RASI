@@ -3,7 +3,8 @@ from sqlalchemy import create_engine, text
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 from hashlib import sha256
-from backend.schemas import (
+from typing import List
+from schemas import (
     Patient,
     Doctor,
     Schedule,
@@ -14,7 +15,7 @@ from backend.schemas import (
     Medicament,
     MedicamentDetail,
 )
-from backend.models import (
+from models import (
     patients,
     doctors,
     schedules,
@@ -52,21 +53,21 @@ Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 # GET 
 # GET ALL
-@app.get("/patients", response_model=list[Patient])
+@app.get("/patients", response_model=List[Patient])
 def getPatients():
     with engine.connect() as c:
         result = c.execute(text("SELECT * FROM patients"))
         return result.all()
 
 
-@app.get("/ips", response_model=list[IPS])
+@app.get("/ips", response_model=List[IPS])
 def getIPSs():
     with engine.connect() as c:
         result = c.execute(text("SELECT * FROM ips"))
         return result.all()
 
 
-@app.get("/medicaments", response_model=list[Medicament])
+@app.get("/medicaments", response_model=List[Medicament])
 def getMedicaments():
     with engine.connect() as c:
         stmt = medicaments.select()
@@ -74,7 +75,7 @@ def getMedicaments():
         return result.all() 
 
 
-@app.get("/doctors", response_model=list[Doctor])
+@app.get("/doctors", response_model=List[Doctor])
 def getDoctors():
     with engine.connect() as c:
         stmt = doctors.select()
@@ -82,7 +83,7 @@ def getDoctors():
         return result
 
 
-@app.get("/services", response_model=list[Service])
+@app.get("/services", response_model=List[Service])
 def getServices():
     with engine.connect() as c:
         stmt = services.select()
@@ -90,7 +91,7 @@ def getServices():
         return result
 
 
-@app.get("/schedules", response_model=list[Schedule])
+@app.get("/schedules", response_model=List[Schedule])
 def getSchedules():
     with engine.connect() as c:
         stmt = schedules.select()
@@ -98,13 +99,13 @@ def getSchedules():
         return result
 
 
-@app.get("/appointments", response_model=list[Appointment])
+@app.get("/appointments", response_model=List[Appointment])
 def getAppointments():
     with engine.connect() as c:
         stmt = appointments.select()
         result = c.execute(stmt).all()
         return result
-@app.get("/appointments/services/{id}", response_model=list[Appointment])
+@app.get("/appointments/services/{id}", response_model=List[Appointment])
 def getAppointmentByService(id: int, date: str = None, time: str = None):
     with engine.connect() as c:
         stmt = appointments.select().where((appointments.c.service_id == id) & (appointments.c.patient_id.is_(None)))
@@ -118,7 +119,7 @@ def getAppointmentByService(id: int, date: str = None, time: str = None):
         result = c.execute(stmt).all()
         return result
 
-@app.get("/appointments/services", response_model=list[Appointment])
+@app.get("/appointments/services", response_model=List[Appointment])
 def getAppointmentByServiceName(speciality: str , date: str = None, time: str = None):
     with engine.connect() as c:
         stmt = services.select().where(services.c.speciality == speciality )
@@ -168,7 +169,7 @@ def getMedicament(id: int):
         return result
 
 
-@app.get("/ips/{id_ips}/medicaments", response_model=list[MedicamentDetail])
+@app.get("/ips/{id_ips}/medicaments", response_model=List[MedicamentDetail])
 def getMedsAvaliability(id_ips: int):
     with engine.connect() as c:
         stmt = (
