@@ -28,11 +28,11 @@ from backend.models import (
 
 app = FastAPI()
 
-db_user = "admin"
-db_pass = "password"
-db_host = "localhost"
+db_user = "monitoring_user"
+db_pass = "isis2503"
+db_host = "10.128.0.4"
 db_port = "5432"
-db_name = "rasi"
+db_name = "monitoring_db"
 
 
  
