@@ -51,6 +51,9 @@ app.add_middleware(
 )
 
 # GET 
+@app.get("/health")
+def healthCheck():
+    return []
 # GET ALL
 @app.get("/patients", response_model=List[Patient])
 def getPatients():
