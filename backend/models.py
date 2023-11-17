@@ -18,10 +18,12 @@ patients = Table(
     Column("id", BigInteger(), primary_key=True, index=True),
     Column("name", String(), index=True),
     # password = Column(String)
-    Column("birth", String(), index=True),
+    Column("birth", Date(), index=True),
     Column("gender", String()),
     Column("pnumber", BigInteger()),
     Column("email", String()),
+    Column("resume", String()),
+    Column("hash", String(), nullable=True),
 )
 
 schedules = Table(

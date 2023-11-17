@@ -1,6 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import time, date
 from typing import Optional
+
 # Schemas
 
 
@@ -8,10 +9,12 @@ class Patient(BaseModel):
     model_config: ConfigDict(from_attributes=True)
     id: int
     name: str
-    birth: str
+    birth: date
     gender: str
     pnumber: int
     email: str
+    resume: str
+    hash: Optional[str]
 
 
 class Doctor(BaseModel):

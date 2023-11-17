@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Path
 from sqlalchemy import create_engine, text
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
+from hashlib import sha256
 from backend.schemas import (
     Patient,
     Doctor,
@@ -27,18 +28,17 @@ from backend.models import (
 
 app = FastAPI()
 
-db_user = "monitoring_user"
-db_pass = "isis2503"
-db_host = "10.128.0.4"
+db_user = "admin"
+db_pass = "password"
+db_host = "localhost"
 db_port = "5432"
-db_name = "monitoring_db"
+db_name = "rasi"
 
 
-
+ 
 engine = create_engine(
     f"postgresql+psycopg://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}", echo=True
 )
-
 
 
 app.add_middleware(
@@ -48,7 +48,8 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
-
+Base.metadata.drop_all(engine)
+Base.metadata.create_all(engine)
 # GET 
 # GET ALL
 @app.get("/patients", response_model=list[Patient])
@@ -70,7 +71,7 @@ def getMedicaments():
     with engine.connect() as c:
         stmt = medicaments.select()
         result = c.execute(stmt)
-        return result.all()
+        return result.all() 
 
 
 @app.get("/doctors", response_model=list[Doctor])
@@ -120,7 +121,6 @@ def getAppointmentByService(id: int, date: str = None, time: str = None):
 @app.get("/appointments/services", response_model=list[Appointment])
 def getAppointmentByServiceName(speciality: str , date: str = None, time: str = None):
     with engine.connect() as c:
-        print(speciality)
         stmt = services.select().where(services.c.speciality == speciality )
         result = c.execute(stmt).fetchone()
         if result is not None:
@@ -145,8 +145,8 @@ def getPatient(id: int):
         result = c.execute(stmt).fetchone()
         if result is None:
             raise HTTPException(status_code=404, detail="Patient not found")
+        
         return result
-
 
 @app.get("/ips/{id}", response_model=IPS)
 def getIPS(id: int):
@@ -239,6 +239,7 @@ def getMedIPS(id_medicament: int):
 # POST
 @app.post("/patients")
 def addPatient(patient: Patient):
+    print(patient.resume)
     patientd = {
         "id": patient.id,
         "name": patient.name,
@@ -246,6 +247,8 @@ def addPatient(patient: Patient):
         "gender": patient.gender,
         "pnumber": patient.pnumber,
         "email": patient.email,
+        "resume": patient.resume,
+        "hash" : sha256(patient.resume.encode("utf-8")).hexdigest()
     }
     with engine.connect() as c:
         try:
