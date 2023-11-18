@@ -16,6 +16,8 @@ export class  HistoriaClinica {
 
     resume: string = "";
 
+    hash: string = "";
+
     constructor(initializer?: any) {
 
         if(!initializer) return;
@@ -26,6 +28,7 @@ export class  HistoriaClinica {
         if(initializer.pnumber) this.pnumber = initializer.pnumber;
         if(initializer.email) this.email = initializer.email;
         if(initializer.resume) this.resume = initializer.resume;
+        if(initializer.hash) this.hash = initializer.hash;
 
     }
 

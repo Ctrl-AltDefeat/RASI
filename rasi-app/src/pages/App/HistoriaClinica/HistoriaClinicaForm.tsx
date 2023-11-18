@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {HistoriaClinica} from './HistoriaClinica';
 import {Box, Card, CardBody, CardHeader, Heading, Stack, StackDivider, Text} from '@chakra-ui/react'
 import {Link} from "react-router-dom";
+import { sha256 } from 'js-sha256';
 
 
 function HistoriaClinicaForm() {
@@ -11,14 +12,25 @@ function HistoriaClinicaForm() {
     const ip = "35.226.33.71";
 
     const buscarHistoriaClinica = () => {
-        fetch('http://' + ip+':8000' + `/patients/${id}`)
+        fetch('http://' + ip + ':8000' + `/patients/${id}`)
             .then(response => response.json())
             .then(data => {
                 if (data) {
+                    const { hash, resume, ...rest } = data; // Extracción de hash y resume
                     setHistoriaClinica(data);
+                    const temp = "90386affed0e347d5fc56d15a46ecc574dde2fd9c78c52ea4da43019a5f7c7a2";
+
+                    console.log(hash)
+                    const hashedResume = sha256(resume);
+                    console.log(hashedResume)
+                    if (hash === hashedResume) {
+                        console.log('La información no ha sido modificada.');
+                    } else {
+                        console.log('¡Alerta! La información ha sido modificada.');
+                    }
                 } else {
                     console.log('La respuesta de la API no contiene datos válidos:', data);
-                } // Actualiza el arreglo personas con la respuesta de la API
+                }
             })
             .catch(error => {
                 console.log(error);
