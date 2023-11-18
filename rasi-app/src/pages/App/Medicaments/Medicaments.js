@@ -10,7 +10,7 @@ function Medicaments() {
 
 
         // Hacer la solicitud GET al endpoint de medicamentos en el backend
-        fetch(`http://${ip}/ips/1/medicaments/${medicamento}`)
+        fetch(`http://${ip}:8000/ips/1/medicaments/${medicamento}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data) {
