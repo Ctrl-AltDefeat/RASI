@@ -16,6 +16,7 @@
     "axios": "^1.2.2",
     "bootstrap": "^5.2.3",
     "framer-motion": "^10.12.16",
+    "js-sha256": "^0.10.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-datepicker": "^4.21.0",
