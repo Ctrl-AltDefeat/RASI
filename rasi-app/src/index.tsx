@@ -13,7 +13,7 @@ root.render(
     <Auth0Provider
         domain="rasi-app.us.auth0.com"
         clientId="8pZJ945u8XJO0wz8Qs4YFys4qfvdaxLz"
-        redirectUri={"http://localhost:3000/app"}
+        redirectUri={"https://34.42.124.241:3000/app"}
     >
 
   <React.StrictMode>
