@@ -31,20 +31,6 @@ function Appointments() {
         buscarEspecializacion();
     }, []);
 
-    const buscarCitasPorEspecializacionYHora = () => {
-        fetch(
-            `http://${ip}:8000/appointments/services/${especializacion}?date=${dia}`
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data) {
-                    setDoctoresEncontrados(data.appointments);
-                } 
-            })
-            .catch((error) =>
-                console.error("Error fetching appointments:", error)
-            );
-    };
 
     return (
         <div className="container mt-4">
