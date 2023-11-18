@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 
 function HistoriaClinicaForm() {
 
-    const [HistoriasClinicas, setHistoriasClinicas] = useState<HistoriaClinica[]>([]);
+    const [historiaClinicas, setHistoriaClinicas] = useState<HistoriaClinica[]>([]);
     const [id, setId] = useState<string>('');
     const ip = "35.226.33.71";
 
@@ -16,7 +16,7 @@ function HistoriaClinicaForm() {
         fetch('http://' + ip+':8000' + `/patients/${id}`)
             .then(response => response.json())
             .then(data => {
-                setHistoriasClinicas(data); // Actualiza el arreglo personas con la respuesta de la API
+                setHistoriaClinicas(data); // Actualiza el arreglo personas con la respuesta de la API
             })
             .catch(error => {
                 console.log(error);
@@ -51,9 +51,9 @@ function HistoriaClinicaForm() {
                         </button>
                     </div>
                 </form>
-                {HistoriasClinicas && (
+                {historiaClinicas && (
                     <div className="col-8" >
-                        {HistoriasClinicas.map((historia: HistoriaClinica) => (
+                        {historiaClinicas.map((historia: HistoriaClinica) => (
                             <Link to={`${historia.id}`}>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <Card>
