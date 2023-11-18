@@ -16,16 +16,13 @@ function HistoriaClinicaForm() {
         fetch('http://' + ip+':8000' + `/patients/${id}`)
             .then(response => response.json())
             .then(data => {
-                setHistoriaClinicas(data.map); // Actualiza el arreglo personas con la respuesta de la API
+                setHistoriaClinicas(data); // Actualiza el arreglo personas con la respuesta de la API
             })
             .catch(error => {
                 console.log(error);
             });
     }
 
-    useEffect(() => {
-        buscarHistoriaClinica();
-    }, []);
 
 
 
