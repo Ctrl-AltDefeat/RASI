@@ -11,7 +11,7 @@ function Appointments() {
     const [hora, setHora] = useState("");
     const [resultadoBusqueda, setResultadoBusqueda] = useState(null);
 
-    const ip = "localhost";
+    const ip = "35.226.33.71";
 
     const buscarEspecializacion = () => {
         fetch(`http://${ip}:8000/services`)

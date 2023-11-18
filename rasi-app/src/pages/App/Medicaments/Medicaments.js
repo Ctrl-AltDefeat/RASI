@@ -4,7 +4,7 @@ function Medicaments() {
     const [medicamento, setMedicamento] = useState("");
     const [resultadoBusqueda, setResultadoBusqueda] = useState(null);
 
-    const ip = "localhost";
+    const ip = "35.226.33.71";
 
     const buscarMedicamento = () => {
 

@@ -2,20 +2,31 @@
 
 export class  HistoriaClinica {
 
-    nombre: string = "";
+    id: number = 0;
 
-    edad: Date = new Date();
+    name: string = "";
 
-    fechaNacimiento: Date = new Date();
+    birth: Date = new Date();
 
-    historia: string = "";
+    gender: String = "";
+
+    pnumber: number = 0;
+
+    email: string = "";
+
+    resume: string = "";
 
     constructor(initializer?: any) {
+
         if(!initializer) return;
-        if(initializer.nombre) this.nombre = initializer.nombre;
-        if(initializer.edad) this.edad = initializer.edad;
-        if(initializer.fechaNacimiento) this.fechaNacimiento = initializer.fechaNacimiento;
-        if(initializer.historia) this.historia = initializer.historia;
+        if(initializer.id) this.id = initializer.id;
+        if(initializer.name) this.name = initializer.name;
+        if(initializer.birth) this.birth = initializer.birth;
+        if(initializer.gender) this.gender = initializer.birth;
+        if(initializer.pnumber) this.pnumber = initializer.pnumber;
+        if(initializer.email) this.email = initializer.email;
+        if(initializer.resume) this.resume = initializer.resume;
+
     }
 
 
