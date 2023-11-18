@@ -51,9 +51,9 @@ function HistoriaClinicaForm() {
                         </button>
                     </div>
                 </form>
-                {historiaClinicas && (
+
                     <div className="col-8" >
-                        {historiaClinicas.map((historia: HistoriaClinica) => (
+                        {historiaClinicas.map((historia:HistoriaClinica) => (
                             <Link to={`${historia.id}`}>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <Card>
@@ -94,7 +94,6 @@ function HistoriaClinicaForm() {
 
                         ))}
                     </div>
-                )}
             </div>
         </>
     )
