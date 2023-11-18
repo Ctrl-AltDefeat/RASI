@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 
 function HistoriaClinicaForm() {
 
-    const [historiaClinicas, setHistoriaClinicas] = useState<HistoriaClinica[]>([]);
+    const [historiaClinica, setHistoriaClinica] = useState<HistoriaClinica|null>(null);
     const [id, setId] = useState<string>('');
     const ip = "35.226.33.71";
 
@@ -17,7 +17,7 @@ function HistoriaClinicaForm() {
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    setHistoriaClinicas(data);
+                    setHistoriaClinica(data);
                 } else {
                     console.log('La respuesta de la API no contiene datos válidos:', data);
                 } // Actualiza el arreglo personas con la respuesta de la API
@@ -54,46 +54,45 @@ function HistoriaClinicaForm() {
                 </form>
 
                     <div className="col-8" >
-                        {historiaClinicas && historiaClinicas.map((historia: HistoriaClinica) => (
-                            <Link to={`${historia.id}`}>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
+
+                        {historiaClinica && (
+                            <Link to={`${historiaClinica.id}`}>
                                 <Card>
                                     <CardHeader>
-                                        <Heading size='md'>{historia.name}</Heading>
+                                        <Heading size="md">{historiaClinica.name}</Heading>
                                     </CardHeader>
 
                                     <CardBody>
-                                        <Stack divider={<StackDivider />} spacing='4'>
+                                        <Stack divider={<StackDivider />} spacing="4">
                                             <Box>
-                                                <Heading size='xs' textTransform='uppercase'>
+                                                <Heading size="xs" textTransform="uppercase">
                                                     Fecha de Nacimiento
                                                 </Heading>
-                                                <Text pt='2' fontSize='sm'>
-                                                    {historia.birth.toLocaleString()}
+                                                <Text pt="2" fontSize="sm">
+                                                    {historiaClinica.birth.toLocaleString()}
                                                 </Text>
                                             </Box>
                                             <Box>
-                                                <Heading size='xs' textTransform='uppercase'>
+                                                <Heading size="xs" textTransform="uppercase">
                                                     Genero
                                                 </Heading>
-                                                <Text pt='2' fontSize='sm'>
-                                                    {historia.gender}
+                                                <Text pt="2" fontSize="sm">
+                                                    {historiaClinica.gender}
                                                 </Text>
                                             </Box>
                                             <Box>
-                                                <Heading size='xs' textTransform='uppercase'>
+                                                <Heading size="xs" textTransform="uppercase">
                                                     Historia Clinica
                                                 </Heading>
-                                                <Text pt='2' fontSize='sm'>
-                                                    {historia.resume}
+                                                <Text pt="2" fontSize="sm">
+                                                    {historiaClinica.resume}
                                                 </Text>
                                             </Box>
                                         </Stack>
                                     </CardBody>
                                 </Card>
                             </Link>
-
-                        ))}
+                        )}
                     </div>
             </div>
         </>
