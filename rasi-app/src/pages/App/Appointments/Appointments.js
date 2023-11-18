@@ -60,18 +60,7 @@ function Appointments() {
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <div className="col-md-6">
-                        <label htmlFor="dia" className="form-label">
-                            Fecha
-                        </label>
-                        <DatePicker
-                            selected={dia}
-                            onChange={(date) => setDia(date)}
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            id="dia"
-                        />
-                    </div>
+
                     {/* <div className="col-md-6">
                         <label htmlFor="hora" className="form-label">
                             Hora
