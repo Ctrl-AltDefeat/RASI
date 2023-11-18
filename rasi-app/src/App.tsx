@@ -10,8 +10,8 @@ import Acerca from "./pages/Website/Acerca/acerca";
 import Contacto from "./pages/Website/Contacto/contacto";
 import Acceso from "./pages/Website/Acceso/acceso";
 import RasiApp from "./pages/App/RasiApp/RasiApp";
-import React, {useEffect, useState} from 'react';
-import Auth from "./Auth";
+import React from 'react';
+
 function App() {
 
   return (
@@ -26,7 +26,7 @@ function App() {
                   <Route path={"/acerca"} element={<Acerca/>}/>
                   <Route path={"/contacto"} element={<Contacto/>}/>
                   <Route path={"/acceso"} element={<Acceso/>}/>
-                  <Route path={"/app/*"} element={<Auth><RasiApp/></Auth>}/>
+                  <Route path={"/app/*"} element={<RasiApp/>}/>
 
               </Routes>
           </div>
