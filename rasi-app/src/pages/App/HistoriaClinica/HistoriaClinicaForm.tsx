@@ -32,7 +32,7 @@ function HistoriaClinicaForm() {
     return (
         <>
             <div className="container mt-4 text-center">
-                <h2>Medicamentos</h2>
+                <h2>Historia Clinica</h2>
                 <form className="mb-3">
                     <div className="input-group">
                         <input
