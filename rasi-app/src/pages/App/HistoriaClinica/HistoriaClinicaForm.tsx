@@ -16,7 +16,11 @@ function HistoriaClinicaForm() {
         fetch('http://' + ip+':8000' + `/patients/${id}`)
             .then(response => response.json())
             .then(data => {
-                setHistoriaClinicas(data); // Actualiza el arreglo personas con la respuesta de la API
+                if (data) {
+                    setHistoriaClinicas(data);
+                } else {
+                    console.log('La respuesta de la API no contiene datos válidos:', data);
+                } // Actualiza el arreglo personas con la respuesta de la API
             })
             .catch(error => {
                 console.log(error);
