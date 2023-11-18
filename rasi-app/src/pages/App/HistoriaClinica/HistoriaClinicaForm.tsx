@@ -4,8 +4,6 @@ import {Box, Card, CardBody, CardHeader, Heading, Stack, StackDivider, Text} fro
 import {Link} from "react-router-dom";
 
 
-
-
 function HistoriaClinicaForm() {
 
     const [historiaClinica, setHistoriaClinica] = useState<HistoriaClinica|null>(null);
