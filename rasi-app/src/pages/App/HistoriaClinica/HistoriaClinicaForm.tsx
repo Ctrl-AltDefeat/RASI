@@ -13,7 +13,7 @@ function HistoriaClinicaForm() {
     const ip = "35.226.33.71";
 
     const buscarHistoriaClinica = () => {
-        fetch('https://' + ip+':8000' + `/patients/${id}`)
+        fetch('http://' + ip+':8000' + `/patients/${id}`)
             .then(response => response.json())
             .then(data => {
                 setHistoriasClinicas(data); // Actualiza el arreglo personas con la respuesta de la API
