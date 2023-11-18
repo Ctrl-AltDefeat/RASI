@@ -89,7 +89,7 @@ function Appointments() {
                 <div className="text-center">
                     <button
                         type="button"
-                        onClick={buscarCitasPorEspecializacionYHora}
+                        onClick={buscarEspecializacion}
                         className="btn btn-primary"
                     >
                         Buscar Citas
