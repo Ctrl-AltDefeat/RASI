@@ -11,6 +11,8 @@ USER myuser
 # Copia la aplicación Django al directorio de trabajo
 COPY . /app
 
+USER root
+
 # Establece las variables de entorno
 ENV MEASUREMENTS_DB_HOST 10.128.0.4
 
