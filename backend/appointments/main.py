@@ -3,17 +3,16 @@ from sqlalchemy import create_engine, text
 from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-import httpx
-from backend.appointments.schemas import (Service,Appointment,Doctor)
-from backend.appointments.models import (services,appointments,doctors)
+from schemas import (Service,Appointment,Doctor)
+from models import (services,appointments,doctors)
 
 app = FastAPI()
 
-db_user = "admin"
-db_pass = "password"
-db_host = "localhost"
+db_user = "monitoring_user"
+db_pass = "isis2503"
+db_host = "10.128.0.6"
 db_port = "5432"
-db_name = "postgres"
+db_name = "monitoring_db"
  
 engine = create_engine(
     f"postgresql+psycopg://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}", echo=True

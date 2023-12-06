@@ -2,13 +2,13 @@ from fastapi import FastAPI, HTTPException, Path
 from sqlalchemy import create_engine, text
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
-from backend.medicaments.schemas import (
+from schemas import (
     IPS,
     Medicament_avaliable,
     Medicament,
     MedicamentDetail,
 )
-from backend.medicaments.models import (
+from models import (
     ips,
     med_avaliability,
     medicaments,
@@ -16,11 +16,11 @@ from backend.medicaments.models import (
 
 app = FastAPI()
 
-db_user = "admin"
-db_pass = "password"
-db_host = "localhost"
+db_user = "monitoring_user"
+db_pass = "isis2503"
+db_host = "10.128.0.8"
 db_port = "5432"
-db_name = "postgres"
+db_name = "monitoring_db"
 
  
 engine = create_engine(
