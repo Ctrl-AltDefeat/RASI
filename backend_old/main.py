@@ -7,7 +7,6 @@ from typing import List
 from schemas import (
     Patient,
     Doctor,
-    Schedule,
     Service,
     Appointment,
     IPS,
@@ -18,8 +17,6 @@ from schemas import (
 from models import (
     patients,
     doctors,
-    schedules,
-    Base,
     services,
     appointments,
     ips,
@@ -89,14 +86,6 @@ def getDoctors():
 def getServices():
     with engine.connect() as c:
         stmt = services.select()
-        result = c.execute(stmt).all()
-        return result
-
-
-@app.get("/schedules", response_model=List[Schedule])
-def getSchedules():
-    with engine.connect() as c:
-        stmt = schedules.select()
         result = c.execute(stmt).all()
         return result
 
