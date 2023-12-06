@@ -18,7 +18,7 @@ app = FastAPI()
 
 db_user = "monitoring_user"
 db_pass = "isis2503"
-db_host = "10.128.0.2"
+db_host = "10.182.0.2"
 db_port = "5432"
 db_name = "monitoring_db"
 
