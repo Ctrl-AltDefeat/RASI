@@ -13,6 +13,8 @@ COPY . /app
 
 USER root
 
+EXPOSE 8080
+
 # Establece las variables de entorno
 ENV MEASUREMENTS_DB_HOST 10.128.0.4
 
