@@ -44,3 +44,14 @@ med_avaliability = Table(
     Column("avaliable", Integer()),
     Column("price", Float()),
 )
+
+log = Table(
+    "log",
+    Base.metadata,
+    Column("id", BigInteger(), primary_key=True, index=True),
+    Column("name", String(), primary_key=True, index=True),
+    Column("action", String(), primary_key=True, index=True),
+    Column("datetime", String()),
+    Column("medicament_id", Float()),
+
+)

@@ -6,12 +6,12 @@ from schemas import (
     IPS,
     Medicament_avaliable,
     Medicament,
-    MedicamentDetail,
+    MedicamentDetail,Log
 )
 from models import (
     ips,Base,
     med_avaliability,
-    medicaments,
+    medicaments,log
 )
 
 app = FastAPI()
@@ -48,6 +48,13 @@ def healthCheck():
 def getMedicaments():
     with engine.connect() as c:
         stmt = medicaments.select()
+        result = c.execute(stmt)
+        return result.all() 
+    
+@app.get("/logs", response_model=List[Log])
+def getLogs():
+    with engine.connect() as c:
+        stmt = log.select()
         result = c.execute(stmt)
         return result.all() 
 
@@ -145,13 +152,42 @@ def addMedicament(medicament: Medicament):
     }
     with engine.connect() as c:
         try:
+            addLog(medicamentd['id']-1,medicamentd['id'] )
             getMedicament(medicament.id)
             return "Cannot create Medicament, already exists"
         except HTTPException as e:
+        
             c.execute(medicaments.insert().values(medicamentd))
             c.commit()
             return medicamentd
+        
 
+def addLog(id, medicament_id):
+    
+    logd = {
+        "id": id,
+        "name": "Nicolas Lopez Junco",
+        'action': "Just added a new medicament",
+        "datetime": "2020-10-10 10:55",
+        "medicament_id": medicament_id
+    }
+    with engine.connect() as c:
+        try:
+            getLog(id)
+            return "Cannot create Log, already exists"
+        except HTTPException as e:
+            c.execute(log.insert().values(logd))
+            c.commit()
+            return logd
+        
+@app.get("/logs/{id}", response_model=Log)
+def getLog(id: int):
+    with engine.connect() as c:
+        stmt = log.select().where(log.c.id == id)
+        result = c.execute(stmt).fetchone()
+        if result is None:
+            raise HTTPException(status_code=404, detail="Log not found")
+        return result
 
 @app.post("/ips/{id_ips}/medicaments")
 def addMedicamentIPS(

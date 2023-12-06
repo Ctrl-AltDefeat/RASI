@@ -45,3 +45,12 @@ class MedicamentDetail(BaseModel):
     contains: int
     avaliable: int
     price: float
+
+class Log(BaseModel):
+    model_config: ConfigDict(from_attributes=True)
+    id: int
+    name: str
+    action: str
+    datetime: str
+    medicament_id: float
+
