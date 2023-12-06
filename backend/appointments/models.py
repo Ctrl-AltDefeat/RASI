@@ -25,7 +25,7 @@ appointments = Table(
     Column("duration", Integer()),
     Column("address", String()),
     Column("patient_id", BigInteger(),nullable=True),
-    Column("doctor_id", BigInteger(), ForeignKey("doctors.id")),
+    Column("doctor_id", BigInteger()),
     Column("service_id", BigInteger(), ForeignKey("services.id")),
 )
 services = Table(
