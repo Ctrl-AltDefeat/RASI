@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . /app
 
-ENV DB_HOST 10.128.0.8
+ENV DB_HOST 10.128.0.6
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
