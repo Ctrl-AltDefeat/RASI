@@ -142,7 +142,7 @@ def addAppointment(appointment: Appointment):
             return "Cannot create appointment"
         except HTTPException as e:
             try:
-                getDoctor(appointment.doctor_id)
+     
                 getService(appointment.service_id)
                 c.execute(appointments.insert().values(appointmentd))
                 c.commit()
