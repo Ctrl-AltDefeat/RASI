@@ -9,7 +9,7 @@ from schemas import (
     MedicamentDetail,
 )
 from models import (
-    ips,
+    ips,Base,
     med_avaliability,
     medicaments,
 )
@@ -28,6 +28,8 @@ engine = create_engine(
 )
 
 
+Base.metadata.drop_all(engine)
+Base.metadata.create_all(engine)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
