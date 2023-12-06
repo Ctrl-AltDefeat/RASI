@@ -4,7 +4,7 @@ from datetime import datetime
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from schemas import (Service,Appointment,Doctor)
-from models import (services,appointments,doctors)
+from models import (Base,services,appointments,doctors)
 
 app = FastAPI()
 
