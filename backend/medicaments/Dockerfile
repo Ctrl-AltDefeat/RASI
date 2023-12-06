@@ -7,7 +7,7 @@ COPY . /app
 
 ENV DB_HOST 10.128.0.8
 
-RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+RUN apk add --no-cache postgresql-dev gcc g++ python3-dev musl-dev
 
 RUN apk add --no-cache rust
 
