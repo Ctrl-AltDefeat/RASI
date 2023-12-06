@@ -42,44 +42,44 @@ print(medicalhistory_details)
 @csrf_exempt
 def get_medical_history(request, id):
     try:
-        medical_history = collection.get(id=id)
-        response_data = {
-            'id': medical_history.id,
-            'text': medical_history.text,
-            'hash': medical_history.hash
-        }
-        return JsonResponse(response_data, safe=False)
+        medical_history = collection.find_one({'id': id})
+        if medical_history:
+            response_data = {
+                'id': medical_history.get('id'),
+                'text': medical_history.get('text'),
+                'hash': medical_history.get('hash')
+            }
+            return JsonResponse(response_data, safe=False)
+        else:
+            return JsonResponse({'error': 'Medical history not found'}, status=404)
 
-    except MedicalHistory.DoesNotExist:
-        return JsonResponse({'error': 'Medical history not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': f'Error: {str(e)}'}, status=500)
 
 
 @csrf_exempt
-def update_medical_history(request, id):
-    if request.method == 'PUT':
+def create_medical_history(request):
+    if request.method == 'POST':
         try:
-            data = json.loads(request.body.decode('utf-8'))
-            text = data.get('text', '')
-            hash_value = sha256(text.encode('utf-8')).hexdigest()
+            # Parse the JSON data from the request body
+            data = json.loads(request.body)
 
-            response_data = {
-                'id': id,
-                'text': text,
-                'hash': hash_value
+            # Assuming 'id', 'text', and 'hash' are required fields
+            medical_history_data = {
+                'id': data.get('id'),
+                'text': data.get('text'),
+                'hash': data.get('hash')
             }
-            try:
-                medical_history = MedicalHistory.objects.get(id=id)
-                medical_history.text = text
-                medical_history.hash = hash_value
-                medical_history.save()
 
-            except MedicalHistory.DoesNotExist:
-                collection.insert_one(response_data)
+            # Insert the new medical history record into MongoDB
+            result = collection.insert_one(medical_history_data)
 
+            # Respond with the ID of the newly created record
+            response_data = {'id': str(result.inserted_id)}
+            return JsonResponse(response_data, status=201)  # 201 Created
 
-            return JsonResponse(response_data, safe=False)
+        except Exception as e:
+            return JsonResponse({'error': f'Error: {str(e)}'}, status=500)  # 500 Internal Server Error
 
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    else:
+        return JsonResponse({'error': 'Method not allowed'}, status=405)  # 405 Method Not Allowed
