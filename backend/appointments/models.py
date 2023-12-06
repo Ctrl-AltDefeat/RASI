@@ -24,7 +24,7 @@ appointments = Table(
     Column("time", Time()),
     Column("duration", Integer()),
     Column("address", String()),
-    Column("patient_id", BigInteger(), ForeignKey("patients.id"),nullable=True),
+    Column("patient_id", BigInteger(),nullable=True),
     Column("doctor_id", BigInteger(), ForeignKey("doctors.id")),
     Column("service_id", BigInteger(), ForeignKey("services.id")),
 )
