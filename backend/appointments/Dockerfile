@@ -16,4 +16,4 @@ RUN pip3 install sqlalchemy
 
 RUN pip3 install --no-cache-dir -r dev_requirements.txt
 
-ENTRYPOINT ["sh", "init.sh"]
+CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
