@@ -1,6 +1,4 @@
 maturin==1.4.0
-pydantic-core==2.14.3
 fastapi
-sqlalchemy
 uvicorn[standard]
 psycopg2==2.8.6
