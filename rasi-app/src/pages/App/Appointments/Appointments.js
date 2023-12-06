@@ -11,7 +11,7 @@ function Appointments() {
     const [hora, setHora] = useState("");
     const [resultadoBusqueda, setResultadoBusqueda] = useState(null);
 
-    const ip = "localhost";
+    const ip = "35.226.33.71";
 
     const buscarEspecializacion = () => {
         fetch(`http://${ip}:8000/services`)
@@ -31,20 +31,6 @@ function Appointments() {
         buscarEspecializacion();
     }, []);
 
-    const buscarCitasPorEspecializacionYHora = () => {
-        fetch(
-            `http://${ip}:8000/appointments/services/${especializacion}?date=${dia}`
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                if (data) {
-                    setDoctoresEncontrados(data.appointments);
-                } 
-            })
-            .catch((error) =>
-                console.error("Error fetching appointments:", error)
-            );
-    };
 
     return (
         <div className="container mt-4">
@@ -74,18 +60,7 @@ function Appointments() {
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <div className="col-md-6">
-                        <label htmlFor="dia" className="form-label">
-                            Fecha
-                        </label>
-                        <DatePicker
-                            selected={dia}
-                            onChange={(date) => setDia(date)}
-                            dateFormat="dd/MM/yyyy"
-                            className="form-control"
-                            id="dia"
-                        />
-                    </div>
+
                     {/* <div className="col-md-6">
                         <label htmlFor="hora" className="form-label">
                             Hora
@@ -103,7 +78,7 @@ function Appointments() {
                 <div className="text-center">
                     <button
                         type="button"
-                        onClick={buscarCitasPorEspecializacionYHora}
+                        onClick={buscarEspecializacion}
                         className="btn btn-primary"
                     >
                         Buscar Citas

@@ -4,11 +4,13 @@ function Medicaments() {
     const [medicamento, setMedicamento] = useState("");
     const [resultadoBusqueda, setResultadoBusqueda] = useState(null);
 
+    const ip = "35.226.33.71";
+
     const buscarMedicamento = () => {
 
 
         // Hacer la solicitud GET al endpoint de medicamentos en el backend
-        fetch(`http://localhost:8000/ips/1/medicaments/${medicamento}`)
+        fetch(`http://${ip}:8000/ips/1/medicaments/${medicamento}`)
             .then((response) => response.json())
             .then((data) => {
                 if (data) {

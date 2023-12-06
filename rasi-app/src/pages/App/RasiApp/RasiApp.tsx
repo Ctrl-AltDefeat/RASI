@@ -14,7 +14,7 @@ import Dashboard from "../Dashboard/Dashboard";
 
 import Appointments from "../Appointments/Appointments";
 import Medicaments  from "../Medicaments/Medicaments";
-
+import HistoriaClinicaForm from "../HistoriaClinica/HistoriaClinicaForm";
 const { Content, Footer, Sider } = Layout;
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -38,6 +38,7 @@ const titulos: MenuItem[] = [
     getItem('Dashboard', 'dashboard', <PieChartOutlined />),
     getItem('Citas', 'citas', <UserOutlined />),
     getItem('Medicamentos', 'medicamentos', <MedicineBoxOutlined />),
+    getItem('Historias', 'historias', <DesktopOutlined />),
 
 ];
 
@@ -89,7 +90,7 @@ function Contenido(){
             <Route path="dashboard" element={<Dashboard/>} />
             <Route path="citas" element={<Appointments/>} />
             <Route path="medicamentos" element={<Medicaments/>} />
-
+            <Route path="historias" element={<HistoriaClinicaForm/>} />
         </Routes>
     </div>);
 }

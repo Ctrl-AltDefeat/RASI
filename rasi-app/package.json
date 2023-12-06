@@ -16,6 +16,7 @@
     "axios": "^1.2.2",
     "bootstrap": "^5.2.3",
     "framer-motion": "^10.12.16",
+    "js-sha256": "^0.10.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-datepicker": "^4.21.0",
@@ -23,7 +24,7 @@
     "react-highlight-words": "^0.20.0",
     "react-pro-sidebar": "^1.0.0",
     "react-responsive": "^9.0.2",
-    "react-router-dom": "^6.6.2",
+    "react-router-dom": "^6.19.0",
     "react-scripts": "5.0.1",
     "rsuite": "^5.24.1",
     "web-vitals": "^2.1.4"
