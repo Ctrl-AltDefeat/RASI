@@ -1,4 +1,4 @@
 maturin==1.4.0
 fastapi
 uvicorn[standard]
-psycopg2==2.8.6
+psycopg[binary]
