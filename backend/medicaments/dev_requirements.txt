@@ -1,5 +1,4 @@
-black
 fastapi
 sqlalchemy
 uvicorn[standard]
-psycopg[binary]
+psycopg2==2.8.6
