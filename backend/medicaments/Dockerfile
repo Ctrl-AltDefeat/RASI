@@ -1,5 +1,5 @@
 # Usa una imagen base optimizada para contenedores
-FROM python3:3.8.10-alpine3.13
+FROM python:3.8.10-alpine3.13
 
 # Establece el directorio de trabajo
 WORKDIR /app
