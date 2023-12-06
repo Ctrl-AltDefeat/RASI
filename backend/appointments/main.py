@@ -26,7 +26,8 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["*"],
 )
-
+Base.metadata.drop_all(engine)
+Base.metadata.create_all(engine)
 # GET 
 @app.get("/health/")
 def healthCheck():
